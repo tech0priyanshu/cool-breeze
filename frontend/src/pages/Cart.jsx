@@ -1,87 +1,110 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../context/ShopContext';
-import Title from '../components/Title';
-import { assets } from '../assets/assets';
-import CartTotal from '../components/CartTotal';
+import React, { useContext } from "react";
+import { ShopContext } from "../context/ShopContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
-  const [cartData, setCartData] = useState([]);
+  const { cartItems, products, updateQuantity } = useContext(ShopContext);
+  const navigate = useNavigate();
+  const delivery_fee = 150;
 
-  useEffect(() => {
-    const tempData = [];
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          tempData.push({
-            _id: items,
-            size: item,
-            quantity: cartItems[items][item],
-          });
-        }
+  // Flatten cart items into an array with product + size + quantity
+  const itemsInCart = [];
+
+  for (const productId in cartItems) {
+    const product = products.find((p) => p._id === productId);
+    if (!product) continue;
+
+    for (const size in cartItems[productId]) {
+      const quantity = cartItems[productId][size];
+      if (quantity > 0) {
+        itemsInCart.push({ ...product, size, quantity });
       }
     }
-    setCartData(tempData);
-  }, [cartItems]);
+  }
 
-  const isCartEmpty = cartData.length === 0;
+  const getSubtotal = () => {
+    return itemsInCart.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+  };
+
+  const totalAmount = getSubtotal() + delivery_fee;
 
   return (
-    <div className='border-t pt-14'>
-      <div className='mb-3 text-2xl'>
-        <Title text1={'YOUR'} text2={'CART'} />
-      </div>
-      <div>
-        {cartData.map((item, index) => {
-          const productData = products.find((product) => product._id === item._id);
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
 
-          return (
-            <div key={index} className='grid py-4 text-gray-700 border-t border-b grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
-              <div className='flex items-start gap-6'>
-                <img className='w-16 sm:w-20' src={productData.image[0]} alt="Photo" />
-                <div>
-                  <p className='text-sm font-medium sm:text-lg'>{productData.name}</p>
-                  <div className='flex items-center gap-5 mt-2'>
-                    <p>
-                      {currency}&nbsp;{productData.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </p>
-                    <p className='px-2 border sm:px-3 sm:py-1 bg-slate-50'>{item.size}</p>
-                  </div>
+      {itemsInCart.length === 0 ? (
+        <p className="text-center text-lg">Your cart is empty.</p>
+      ) : (
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Cart Items */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 flex-grow">
+            {itemsInCart.map((item, index) => (
+              <div
+                key={index}
+                className="border rounded-lg p-4 shadow hover:shadow-lg transition"
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-40 object-cover mb-2 rounded"
+                />
+                <h3 className="text-lg font-semibold">{item.name}</h3>
+                <p>Size: {item.size}</p>
+                <p>Quantity: {item.quantity}</p>
+                <p>Price: ₹{item.price * item.quantity}</p>
+                <div className="mt-2">
+                  <button
+                    className="px-2 py-1 bg-red-500 text-white rounded"
+                    onClick={() =>
+                      updateQuantity(item._id, item.size, item.quantity - 1)
+                    }
+                  >
+                    -
+                  </button>
+                  <span className="mx-2">{item.quantity}</span>
+                  <button
+                    className="px-2 py-1 bg-green-500 text-white rounded"
+                    onClick={() =>
+                      updateQuantity(item._id, item.size, item.quantity + 1)
+                    }
+                  >
+                    +
+                  </button>
                 </div>
               </div>
-              <input
-                onChange={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, item.size, Number(e.target.value))} 
-                className='px-1 py-1 border max-w-10 sm:max-w-20 sm:px-2' 
-                type="number" 
-                min={1} 
-                defaultValue={item.quantity} 
-              />
-              <img 
-                onClick={() => updateQuantity(item._id, item.size, 0)} 
-                className='w-4 mr-4 cursor-pointer sm:w-5' 
-                src={assets.bin_icon} 
-                alt="Remove" 
-              />
+            ))}
+          </div>
+
+          {/* Cart Summary */}
+          <div className="w-full lg:w-1/3 bg-white p-6 rounded-lg shadow-md h-fit">
+            <h2 className="text-xl font-semibold border-b pb-3 mb-4">
+              CART TOTAL
+            </h2>
+            <div className="flex justify-between mb-2">
+              <span>Sub Total</span>
+              <span>₹{getSubtotal()}</span>
             </div>
-          );
-        })}
-      </div>
-      <div className='flex justify-end my-20'>
-        <div className='w-full sm:w-[450px]'>
-          <CartTotal />
-          <div className='w-full text-end'>
-            <button 
-              onClick={() => navigate('/place-order')} 
-              className={`px-8 py-3 my-8 text-sm text-white bg-black active:bg-gray-700 ${isCartEmpty ? 'opacity-50 cursor-not-allowed' : ''}`}
-              disabled={isCartEmpty}
+            <div className="flex justify-between mb-2">
+              <span>Shipping Fee</span>
+              <span>₹{delivery_fee}</span>
+            </div>
+            <div className="flex justify-between font-bold text-lg mb-4">
+              <span>Total</span>
+              <span>₹{totalAmount}</span>
+            </div>
+            <button
+             onClick={() => navigate('/place-order')}
+              className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
             >
               PROCEED TO CHECKOUT
             </button>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
-}
+};
 
 export default Cart;
