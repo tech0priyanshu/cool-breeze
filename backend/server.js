@@ -1,31 +1,31 @@
-import express from "express";
-import cors from "cors";
-import "dotenv/config";
-import connectDB from "./config/mongodb.js";
-import connectCloudinary from "./config/cloudinary.js";
-import userRouter from "./routes/userRoute.js";
-import productRouter from "./routes/productRoute.js";
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
-// INFO: Create express app
+// Route Imports
+import productRoute from './routes/productRoute.js';
+import userRoute from './routes/userRoute.js';
+import orderRoute from './routes/orderRoute.js'; // ✅ Order route
+
+dotenv.config();
+
 const app = express();
-const port = process.env.PORT || 4000;
-connectDB();
-connectCloudinary();
+const PORT = process.env.PORT || 5000;
 
-// INFO: Middleware
-app.use(express.json());
+// Middleware
 app.use(cors());
+app.use(express.json()); // Body parser for JSON
 
-// INFO: API endpoints
-app.use("/api/user", userRouter);
-app.use("/api/product", productRouter);
+// Routes
+app.use('/api/products', productRoute);
+app.use('/api/users', userRoute);
+app.use('/api/orders', orderRoute); // ✅ Mount order route
 
-// INFO: Default route
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
-
-// INFO: Start server
-app.listen(port, () =>
-  console.log(`Server is running on at http://localhost:${port}`)
-);
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('✅ MongoDB connected');
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  })
+  .catch((err) => console.log('❌ MongoDB connection error:', err));
