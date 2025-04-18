@@ -111,7 +111,7 @@ const Collection = () => {
                 onChange={toggleCategory}
                 checked={category.includes("Men")}
               />
-              Men
+              Fan
             </label>
             <label className="flex gap-2 cursor-pointer">
               <input
@@ -121,7 +121,7 @@ const Collection = () => {
                 onChange={toggleCategory}
                 checked={category.includes("Women")}
               />
-              Women
+              Cooler
             </label>
             <label className="flex gap-2 cursor-pointer">
               <input
@@ -131,7 +131,7 @@ const Collection = () => {
                 onChange={toggleCategory}
                 checked={category.includes("Kids")}
               />
-              Kids
+              AC
             </label>
           </div>
         </div>
@@ -151,7 +151,7 @@ const Collection = () => {
                 onChange={toggleSubCategory}
                 checked={subCategory.includes("Topwear")}
               />
-              Topwear
+              Cool breeze
             </label>
             <label className="flex gap-2 cursor-pointer">
               <input
@@ -161,7 +161,7 @@ const Collection = () => {
                 onChange={toggleSubCategory}
                 checked={subCategory.includes("Bottomwear")}
               />
-              Bottomwear
+              LG
             </label>
             <label className="flex gap-2 cursor-pointer">
               <input
@@ -171,7 +171,7 @@ const Collection = () => {
                 onChange={toggleSubCategory}
                 checked={subCategory.includes("Winterwear")}
               />
-              Winterwear
+              Samsung
             </label>
           </div>
         </div>
