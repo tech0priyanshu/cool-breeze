@@ -99,8 +99,8 @@ export const products = [
     },
     {
         _id: "aaaae",
-        name: "FAN",
-        description: "fan for a good price and quality", price: 130,
+        name: "AC",
+        description: "AC for a good price and quality", price: 130,
         image: [p_img5],
         category: "Women",
         subCategory: "Topwear",
