@@ -52,8 +52,8 @@ export const assets = {
 export const products = [
     {
         _id: "aaaaa",
-        name: "FAN",
-        description: "Fan.",
+        name: "AC",
+        description: "AC.",
         price: 100,
         image: [p_img1],
         category: "cooler",
@@ -64,8 +64,8 @@ export const products = [
     },
     {
         _id: "aaaab",
-        name: "FAN",
-        description: "Fan.",
+        name: "AC",
+        description: "AC.",
         price: 200,
         image: [p_img2_1],
         category: "Men",
@@ -89,7 +89,7 @@ export const products = [
     {
         _id: "aaaad",
         name: "FAN",
-        description: "fan for a good price and quality",        price: 110,
+        description: "fan for a good price and quality", price: 110,
         image: [p_img4],
         category: "Men",
         subCategory: "Topwear",
@@ -100,7 +100,7 @@ export const products = [
     {
         _id: "aaaae",
         name: "FAN",
-        description: "fan for a good price and quality",        price: 130,
+        description: "fan for a good price and quality", price: 130,
         image: [p_img5],
         category: "Women",
         subCategory: "Topwear",
@@ -111,7 +111,7 @@ export const products = [
     {
         _id: "aaaaf",
         name: "FAN",
-        description: "fan for a good price and quality",        price: 140,
+        description: "fan for a good price and quality", price: 140,
         image: [p_img6],
         category: "Kids",
         subCategory: "Topwear",
@@ -122,7 +122,7 @@ export const products = [
     {
         _id: "aaaag",
         name: "FAN",
-        description: "fan for a good price and quality",        price: 190,
+        description: "fan for a good price and quality", price: 190,
         image: [p_img7],
         category: "Men",
         subCategory: "Bottomwear",
@@ -132,8 +132,8 @@ export const products = [
     },
     {
         _id: "aaaah",
-        name: "FAN",
-        description: "fan for a good price and quality",        price: 140,
+        name: "Cooler",
+        description: "Cooler for a good price and quality", price: 140,
         image: [p_img8],
         category: "Men",
         subCategory: "Topwear",
@@ -144,7 +144,7 @@ export const products = [
     {
         _id: "aaaai",
         name: "FAN",
-        description: "fan for a good price and quality",        price: 100,
+        description: "fan for a good price and quality", price: 100,
         image: [p_img9],
         category: "Kids",
         subCategory: "Topwear",
@@ -154,8 +154,8 @@ export const products = [
     },
     {
         _id: "aaaaj",
-        name: "FAN",
-        description: "fan for a good price and quality",        price: 110,
+        name: "AC",
+        description: "AC for a good price and quality", price: 110,
         image: [p_img10],
         category: "Men",
         subCategory: "Bottomwear",
